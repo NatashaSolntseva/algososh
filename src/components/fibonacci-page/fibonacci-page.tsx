@@ -17,6 +17,7 @@ export const FibonacciPage: FC = () => {
     <SolutionLayout title="Последовательность Фибоначчи">
       <div className={styles.wrapper}>
         <Input
+          placeholder="Введите число"
           extraClass={styles.input}
           type={"number"}
           isLimitText={true}
