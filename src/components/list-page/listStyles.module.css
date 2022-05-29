@@ -1,0 +1,31 @@
+.contentContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.input {
+  max-width: 204px;
+}
+
+.button {
+  min-width: 175px;
+}
+
+.buttonLage {
+  min-width: 362px;
+}
+
+.list {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 16px;
+
+  padding: 90px 0 0;
+  margin: 0;
+  list-style-type: none;
+}
+
+.listElement {
+  display: flex;
+}
