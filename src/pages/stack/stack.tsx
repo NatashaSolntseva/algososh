@@ -2,11 +2,11 @@ import React from "react";
 
 import styles from "./stackStyles.module.css";
 
-import InputWrapper from "../input-wrapper/input-wrapper";
-import { Button } from "../ui/button/button";
-import { Circle } from "../ui/circle/circle";
-import { Input } from "../ui/input/input";
-import { SolutionLayout } from "../ui/solution-layout/solution-layout";
+import InputWrapper from "../../components/input-wrapper/input-wrapper";
+import { Button } from "../../components/ui/button/button";
+import { Circle } from "../../components/ui/circle/circle";
+import { Input } from "../../components/ui/input/input";
+import { SolutionLayout } from "../../components/ui/solution-layout/solution-layout";
 
 export const StackPage: React.FC = () => {
   return (

@@ -2,11 +2,11 @@ import { FC } from "react";
 
 import styles from "./fibonacciStyles.module.css";
 
-import { SolutionLayout } from "../ui/solution-layout/solution-layout";
-import { Input } from "../ui/input/input";
-import { Button } from "../ui/button/button";
-import { Circle } from "../ui/circle/circle";
-import InputWrapper from "../input-wrapper/input-wrapper";
+import { SolutionLayout } from "../../components/ui/solution-layout/solution-layout";
+import { Input } from "../../components/ui/input/input";
+import { Button } from "../../components/ui/button/button";
+import { Circle } from "../../components/ui/circle/circle";
+import InputWrapper from "../../components/input-wrapper/input-wrapper";
 
 export const FibonacciPage: FC = () => {
   //перестановка по нажатию на "Развернуть"

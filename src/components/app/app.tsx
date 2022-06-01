@@ -1,12 +1,12 @@
 import React from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
-import { FibonacciPage } from "../fibonacci-page/fibonacci-page";
-import { ListPage } from "../list-page/list-page";
-import { MainPage } from "../main-page/main-page";
-import { QueuePage } from "../queue-page/queue-page";
-import { StringComponent } from "../string/string";
-import { SortingPage } from "../sorting-page/sorting-page";
-import { StackPage } from "../stack-page/stack-page";
+import { FibonacciPage } from "../../pages/fibonacci/fibonacci";
+import { ListPage } from "../../pages/list/list";
+import { MainPage } from "../../pages/main/main";
+import { QueuePage } from "../../pages/queue/queue";
+import { StringComponent } from "../../pages/string/string";
+import { SortingPage } from "../../pages/sorting/sorting";
+import { StackPage } from "../../pages/stack/stack";
 
 import "./app.css";
 
