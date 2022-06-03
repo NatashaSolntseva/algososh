@@ -75,6 +75,7 @@ export const StringComponent: FC = () => {
     <SolutionLayout title="Строка">
       <InputWrapper>
         <Input
+          disabled={inProсess}
           extraClass={styles.input}
           isLimitText={true}
           maxLength={11}

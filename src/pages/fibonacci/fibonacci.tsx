@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { Dispatch, FC, FormEvent, SetStateAction, useState } from "react";
 
 import styles from "./fibonacciStyles.module.css";
 
@@ -7,86 +7,71 @@ import { Input } from "../../components/ui/input/input";
 import { Button } from "../../components/ui/button/button";
 import { Circle } from "../../components/ui/circle/circle";
 import InputWrapper from "../../components/input-wrapper/input-wrapper";
+import { getFibanacciArr, setDelay } from "../../utils/utils";
+import { SHORT_DELAY_IN_MS } from "../../constants/delays";
 
 export const FibonacciPage: FC = () => {
-  //перестановка по нажатию на "Развернуть"
-  const handleClick = () => {
-    alert("fibonacci");
+  const maxInputValue = 19;
+  const [inputValue, setInputValue] = useState<number>();
+  const [numbersArr, setNumbersArr] = useState<number[]>([]);
+  const [inProcess, setInProcess] = useState(false);
+
+  const getFibonacci = async (
+    inputNumber: number,
+    inputValueSetter: Dispatch<SetStateAction<number | undefined>>,
+    numberSetter: Dispatch<SetStateAction<number[]>>,
+    processSetter: Dispatch<SetStateAction<boolean>>
+  ) => {
+    //очистка инпута
+    inputValueSetter(0);
+    //блокировка кнопки и ввода - лоадер
+    processSetter(true);
+    const resultFibonacciArr = [...getFibanacciArr(inputNumber)];
+    const renderFibonacciArr: number[] = [];
+    for (let el of resultFibonacciArr) {
+      renderFibonacciArr.push(el);
+      numberSetter([...renderFibonacciArr]);
+      await setDelay(SHORT_DELAY_IN_MS);
+    }
+    processSetter(false);
   };
 
   return (
     <SolutionLayout title="Последовательность Фибоначчи">
       <InputWrapper>
         <Input
-          placeholder="Введите число"
+          disabled={inProcess}
+          placeholder="Введите число от 1 до 19 (включительно)"
           extraClass={styles.input}
-          type={"number"}
+          type="number"
           isLimitText={true}
-          max={19}
+          min={1}
+          max={maxInputValue}
+          maxLength={2}
+          value={inputValue || ""}
+          onChange={(e: FormEvent<HTMLInputElement>) =>
+            setInputValue(Number(e.currentTarget.value))
+          }
         />
-        <Button text={"Рассчитать"} onClick={handleClick} />
+        <Button
+          text={"Рассчитать"}
+          type="submit"
+          onClick={(e) =>
+            inputValue &&
+            getFibonacci(inputValue, setInputValue, setNumbersArr, setInProcess)
+          }
+          isLoader={inProcess}
+          disabled={inputValue ? inputValue > maxInputValue : true}
+        />
       </InputWrapper>
       <ul className={styles.list}>
-        <li>
-          <Circle letter={"1"} />
-        </li>
-        <li>
-          <Circle letter={"1"} />
-        </li>
-        <li>
-          <Circle letter={"2"} />
-        </li>
-        <li>
-          <Circle letter={"3"} />
-        </li>
-        <li>
-          <Circle letter={"5"} />
-        </li>
-        <li>
-          <Circle letter={"8"} />
-        </li>
-        <li>
-          <Circle letter={"13"} />
-        </li>
-        <li>
-          <Circle letter={"21"} />
-        </li>
-        <li>
-          <Circle letter={"34"} />
-        </li>
-        <li>
-          <Circle letter={"55"} />
-        </li>
-        <li>
-          <Circle letter={"89"} />
-        </li>
-        <li>
-          <Circle letter={"144"} />
-        </li>
-        <li>
-          <Circle letter={"233"} />
-        </li>
-        <li>
-          <Circle letter={"377"} />
-        </li>
-        <li>
-          <Circle letter={"610"} />
-        </li>
-        <li>
-          <Circle letter={"987"} />
-        </li>
-        <li>
-          <Circle letter={"1597"} />
-        </li>
-        <li>
-          <Circle letter={"2584"} />
-        </li>
-        <li>
-          <Circle letter={"4181"} />
-        </li>
-        <li>
-          <Circle letter={"6765"} index={19} />
-        </li>
+        {numbersArr.map((number, index) => {
+          return (
+            <li key={index}>
+              <Circle letter={number.toString()} index={index} />
+            </li>
+          );
+        })}
       </ul>
     </SolutionLayout>
   );
