@@ -9,6 +9,7 @@ import { Column } from "../../components/ui/column/column";
 import { Direction } from "../../types/direction";
 import InputWrapper from "../../components/input-wrapper/input-wrapper";
 import { ElementStates } from "../../types/element-states";
+import { getRandomArr } from "../../utils/utils";
 
 interface IColumn {
   number: number;
@@ -17,16 +18,10 @@ interface IColumn {
 
 export const SortingPage: FC = () => {
   const [sortingType, setSortingType] = useState<string>("selection");
-  const [initialArr, setInitialArr] = useState<Array<IColumn>>([
-    { number: 2, state: ElementStates.Default },
-    { number: 34, state: ElementStates.Default },
-    { number: 17, state: ElementStates.Default },
-    { number: 100, state: ElementStates.Default },
-    { number: 50, state: ElementStates.Default },
-  ]);
+  const [initialArr, setInitialArr] = useState<Array<IColumn>>([]);
 
   const generateNewArray = () => {
-    alert("generateNewArray");
+    setInitialArr([...getRandomArr(3, 17, 100)]);
   };
 
   const bubbleSorting = () => {
