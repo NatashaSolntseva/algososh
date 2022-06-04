@@ -35,17 +35,20 @@ export const SortingPage: FC = () => {
     processSetter(true);
     const arr = [...initialArr];
 
-    for (let i = 0; i < arr.length - 1; i++) {
+    for (let i = 0; i < arr.length; i++) {
       for (let j = 0; j < arr.length - i - 1; j++) {
         initialArrSetter([...arr]);
         await setDelay(SHORT_DELAY_IN_MS);
-        if (arr[j].number > arr[j + 1].number) {
+        if (
+          (sortingOption === "ascending" ? arr[j].number : arr[j + 1].number) >
+          (sortingOption === "ascending" ? arr[j + 1].number : arr[j].number)
+        ) {
           initialArrSetter([...arr]);
           swapArrElements(arr, j, j + 1);
         }
       }
     }
-    //initialArrSetter([...arr]);
+    initialArrSetter([...arr]);
     processSetter(false);
   };
 
@@ -62,8 +65,15 @@ export const SortingPage: FC = () => {
       let swapInd = i;
       console.log("arr", arr);
       console.log("swapInd i", swapInd);
+      initialArrSetter([...arr]);
+      await setDelay(SHORT_DELAY_IN_MS);
       for (let j = i + 1; j < arr.length; j++) {
-        if (arr[swapInd].number < arr[j].number) {
+        if (
+          (sortingOption === "ascending"
+            ? arr[swapInd].number
+            : arr[j].number) >
+          (sortingOption === "ascending" ? arr[j].number : arr[swapInd].number)
+        ) {
           swapInd = j;
           console.log("swapInd j", swapInd);
           initialArrSetter([...arr]);
