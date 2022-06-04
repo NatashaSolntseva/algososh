@@ -52,7 +52,7 @@ export const StringComponent: FC = () => {
         arr[start].state = ElementStates.Modified;
         setCharArr([...arr]);
         await setDelay(DELAY_IN_MS);
-        setInProсess(false);
+        processSetter(false);
       } else {
         // подсвечиваем элементы, которые меняются местами
         arr[start].state = ElementStates.Changing;
@@ -68,7 +68,7 @@ export const StringComponent: FC = () => {
         await setDelay(DELAY_IN_MS);
       }
     }
-    setInProсess(false);
+    processSetter(false);
   };
 
   return (
