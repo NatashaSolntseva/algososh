@@ -1,10 +1,4 @@
-import React, {
-  Dispatch,
-  FC,
-  FormEvent,
-  SetStateAction,
-  useState,
-} from "react";
+import { Dispatch, FC, FormEvent, SetStateAction, useState } from "react";
 
 import styles from "./stringStyles.module.css";
 
@@ -16,27 +10,23 @@ import InputWrapper from "../../components/input-wrapper/input-wrapper";
 import { ElementStates } from "../../types/element-states";
 import { setDelay, swapArrElements } from "../../utils/utils";
 import { DELAY_IN_MS } from "../../constants/delays";
-
-export interface ISimbol {
-  char: string;
-  state: ElementStates;
-}
+import { ICircleElement } from "../../types/types";
 
 export const StringComponent: FC = () => {
   const [inputValue, setInputValue] = useState("");
-  const [charArr, setCharArr] = useState<Array<ISimbol>>([]);
+  const [charArr, setCharArr] = useState<Array<ICircleElement>>([]);
   const [inProсess, setInProсess] = useState(false);
 
   //перестановка по нажатию на "Развернуть"
   const swapOnClick = async (
     inputString: string,
     inputValueSetter: Dispatch<SetStateAction<string>>,
-    charArrSetter: Dispatch<SetStateAction<ISimbol[]>>,
+    charArrSetter: Dispatch<SetStateAction<ICircleElement[]>>,
     processSetter: Dispatch<SetStateAction<boolean>>
   ) => {
     inputValueSetter(""); //очистка инпута
     processSetter(true); // блокировка кнопки "Развернуть"
-    const letterArr: ISimbol[] = [];
+    const letterArr: ICircleElement[] = [];
     inputString.split("").forEach((letter) => {
       letterArr.push({ char: letter, state: ElementStates.Default });
     });
@@ -96,7 +86,7 @@ export const StringComponent: FC = () => {
       </InputWrapper>
       <ul className={styles.list}>
         {charArr &&
-          charArr.map((char: ISimbol, index) => {
+          charArr.map((char: ICircleElement, index) => {
             return (
               <li key={index}>
                 <Circle letter={char.char} state={char.state} />

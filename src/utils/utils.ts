@@ -1,7 +1,7 @@
 import { DELAY_IN_MS } from "../constants/delays";
 import { IColumn } from "../pages/sorting/sorting";
-import { ISimbol } from "../pages/string/string";
 import { ElementStates } from "../types/element-states";
+import { ICircleElement } from "../types/types";
 
 export const setDelay = (delay: number = DELAY_IN_MS): Promise<null> => {
   return new Promise((resolve) => {
@@ -12,7 +12,7 @@ export const setDelay = (delay: number = DELAY_IN_MS): Promise<null> => {
 };
 
 export const swapArrElements = (
-  arr: ISimbol[] | IColumn[],
+  arr: ICircleElement[] | IColumn[],
   firstIndex: number,
   secondIndex: number
 ): void => {
