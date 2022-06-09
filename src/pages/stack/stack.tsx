@@ -61,7 +61,7 @@ export const StackPage: FC = () => {
     setIsPushing(true);
     //сохраняем новый стек
     stack.push(inputValue);
-    console.log("stack", stack);
+    //console.log("stack", stack);
     setInputValue("");
     //сбрасываем все настройки цвета, топ в стейте
     elementsArr.forEach((el) => {
