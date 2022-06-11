@@ -39,8 +39,8 @@ export const QueuePage: FC = () => {
     setIsAdding(true);
     queue.enqueue(inputValue);
     setInputValue("");
-    const head = queue.getHead();
-    const tail = queue.getTail();
+    const head = queue.head;
+    const tail = queue.tail;
     //устанавливаем голову
     elementsArr[head.index].char = head.value;
     elementsArr[head.index].head = "head";
@@ -59,13 +59,13 @@ export const QueuePage: FC = () => {
 
   const dequeue = async () => {
     setIsDeleting(true);
-    const head = queue.getHead();
-    const tail = queue.getTail();
+    const head = queue.head;
+    const tail = queue.tail;
     if (head.index === tail.index) {
       clear();
     } else {
       queue.dequeue();
-      const head = queue.getHead();
+      const head = queue.head;
       elementsArr[head.index - 1].state = ElementStates.Changing;
       await setDelay(SHORT_DELAY_IN_MS);
       elementsArr[head.index - 1].state = ElementStates.Default;
@@ -82,45 +82,50 @@ export const QueuePage: FC = () => {
 
   return (
     <SolutionLayout title="Очередь">
-      <InputWrapper>
-        <Input
-          extraClass={styles.input}
-          placeholder="Введите значение"
-          isLimitText={true}
-          min={1}
-          maxLength={4}
-          value={inputValue || ""}
-          onChange={(e: FormEvent<HTMLInputElement>) =>
-            setInputValue(e.currentTarget.value)
-          }
-        />
-        <Button
-          text="Добавить"
-          type="button"
-          onClick={() => enqueue()}
-          isLoader={isAdding}
-          disabled={
-            !inputValue ||
-            elementsArr[elementsArr.length - 1].char !== "" ||
-            isDeleting
-          }
-        />
-        <Button
-          text="Удалить"
-          type="button"
-          onClick={() => dequeue()}
-          isLoader={isDeleting}
-          disabled={isAdding || queue.isEmpty()}
-        />
-        <Button
-          extraClass={styles.resetButton}
-          text="Очистить"
-          type="button"
-          onClick={() => clear()}
-          disabled={isAdding || isDeleting || queue.isEmpty()}
-        />
-      </InputWrapper>
-
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          enqueue();
+        }}
+      >
+        <InputWrapper>
+          <Input
+            extraClass={styles.input}
+            placeholder="Введите значение"
+            isLimitText={true}
+            min={1}
+            maxLength={4}
+            value={inputValue || ""}
+            onChange={(e: FormEvent<HTMLInputElement>) =>
+              setInputValue(e.currentTarget.value)
+            }
+          />
+          <Button
+            text="Добавить"
+            type="submit"
+            isLoader={isAdding}
+            disabled={
+              !inputValue ||
+              elementsArr[elementsArr.length - 1].char !== "" ||
+              isDeleting
+            }
+          />
+          <Button
+            text="Удалить"
+            type="button"
+            onClick={() => dequeue()}
+            isLoader={isDeleting}
+            disabled={isAdding || queue.isEmpty}
+          />
+          <Button
+            extraClass={styles.resetButton}
+            text="Очистить"
+            type="button"
+            onClick={() => clear()}
+            disabled={isAdding || isDeleting || queue.isEmpty}
+          />
+        </InputWrapper>
+      </form>
       <ul className={styles.list}>
         {elementsArr.map((char, index) => {
           return (

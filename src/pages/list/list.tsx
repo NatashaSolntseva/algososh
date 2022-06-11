@@ -25,7 +25,7 @@ type TLinkedListElementState = {
 
 export const ListPage: React.FC = () => {
   const maxListLength = 12;
-  const minListLength = 4;
+  const minListLength = 6;
   //для первой отрисовки списка
   const initialRenderArr = useMemo(
     () => Array.from({ length: minListLength }, () => `${getRandomChar()}`),
@@ -71,7 +71,7 @@ export const ListPage: React.FC = () => {
     const arr = [...elementsArr];
 
     // добавляем в список новую голову из инпута
-    linkedList.insertAtIndex(inputValue, 0);
+    linkedList.prepend(inputValue);
 
     // подсвечиваем годову новую в маленьком кружке
     arr[0] = {
@@ -112,9 +112,9 @@ export const ListPage: React.FC = () => {
     const arr = [...elementsArr];
 
     //добавляем в хвост элемент инпута
-    linkedList.addToTail(inputValue);
+    linkedList.append(inputValue);
     //получить индекс хвоста
-    const newTailIndex = linkedList.getSize() - 1;
+    const newTailIndex = linkedList.sizeList - 1;
 
     //цикл передвижение маленького кружка
     for (let i = 0; i <= newTailIndex; i++) {
@@ -167,7 +167,7 @@ export const ListPage: React.FC = () => {
       ...arr[0],
       char: "",
       deleting: true,
-      extraCircle: { char: linkedList.removeFromIndex(0) || "" },
+      extraCircle: { char: linkedList.deleteHead() || "" },
     };
 
     //рендер
@@ -195,14 +195,13 @@ export const ListPage: React.FC = () => {
 
     const arr = [...elementsArr];
     const { length } = arr;
-    const tailIndex = linkedList.getSize() - 1;
     // сносим значение хвоста в нижний круг
     arr[length - 1] = {
       ...arr[length - 1],
       char: "",
       deleting: true,
       extraCircle: {
-        char: linkedList.removeFromIndex(tailIndex) || "",
+        char: linkedList.deleteTail() || "",
       },
     };
     //рендер
@@ -231,7 +230,7 @@ export const ListPage: React.FC = () => {
     const arr = [...elementsArr];
 
     //добавляем в список новый элемент по индексу
-    linkedList.insertAtIndex(inputValue, index);
+    linkedList.addByIndex(inputValue, index);
 
     //цикл передвижение маленького кружка
     for (let i = 0; i <= index; i++) {
@@ -301,7 +300,7 @@ export const ListPage: React.FC = () => {
       char: "",
       deleting: true,
       extraCircle: {
-        char: linkedList.removeFromIndex(index) || "",
+        char: linkedList.deleteByIndex(index) || "",
       },
     };
     //рендер

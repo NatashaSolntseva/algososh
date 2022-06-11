@@ -61,7 +61,7 @@ export const StackPage: FC = () => {
     //удаляем элемент из стэка
     stack.pop();
     // проверка на пустоту стэка
-    if (stack.getSize()) {
+    if (stack.size) {
       elementsArr.pop();
       //Изменить стейт головы и сделать отментку top
       elementsArr[elementsArr.length - 1].head = "top";
@@ -76,41 +76,48 @@ export const StackPage: FC = () => {
 
   return (
     <SolutionLayout title="Стек">
-      <InputWrapper>
-        <Input
-          extraClass={styles.input}
-          placeholder="Введите текст"
-          isLimitText={true}
-          min={1}
-          maxLength={4}
-          value={inputValue || ""}
-          onChange={(e: FormEvent<HTMLInputElement>) =>
-            setInputValue(e.currentTarget.value)
-          }
-          disabled={isPushing || isPopping}
-        />
-        <Button
-          text="Добавить"
-          type="button"
-          onClick={() => pushElement()}
-          isLoader={isPushing}
-          disabled={!inputValue || isPopping || elementsArr.length > 12}
-        />
-        <Button
-          text="Удалить"
-          type="button"
-          onClick={() => popElement()}
-          isLoader={isPopping}
-          disabled={!elementsArr.length || isPushing}
-        />
-        <Button
-          extraClass={styles.resetButton}
-          text="Очистить"
-          type="button"
-          disabled={!elementsArr.length || isPopping || isPushing}
-          onClick={() => clear()}
-        />
-      </InputWrapper>
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          pushElement();
+        }}
+      >
+        <InputWrapper>
+          <Input
+            extraClass={styles.input}
+            placeholder="Введите текст"
+            isLimitText={true}
+            min={1}
+            maxLength={4}
+            value={inputValue || ""}
+            onChange={(e: FormEvent<HTMLInputElement>) =>
+              setInputValue(e.currentTarget.value)
+            }
+            disabled={isPushing || isPopping}
+          />
+          <Button
+            text="Добавить"
+            type="submit"
+            isLoader={isPushing}
+            disabled={!inputValue || isPopping || elementsArr.length > 12}
+          />
+          <Button
+            text="Удалить"
+            type="button"
+            onClick={() => popElement()}
+            isLoader={isPopping}
+            disabled={!elementsArr.length || isPushing}
+          />
+          <Button
+            extraClass={styles.resetButton}
+            text="Очистить"
+            type="button"
+            disabled={!elementsArr.length || isPopping || isPushing}
+            onClick={() => clear()}
+          />
+        </InputWrapper>
+      </form>
+
       <ul className={styles.list}>
         {elementsArr.map((char, index) => {
           return (

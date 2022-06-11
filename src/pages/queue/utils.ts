@@ -1,16 +1,18 @@
 interface IQueue<T> {
   enqueue: (value: T) => void;
   dequeue: () => void;
-  getHead: () => { value: T | null; index: number };
-  getTail: () => { value: T | null; index: number };
   clear: () => void;
-  isEmpty: () => boolean;
+
+  head: { value: T | null; index: number };
+  tail: { value: T | null; index: number };
+
+  isEmpty: boolean;
 }
 
 export default class Queue<T> implements IQueue<T> {
   private container: (T | null)[] = [];
-  head: number = 0;
-  tail: number = 0;
+  private _head: number = 0;
+  private _tail: number = 0;
   private readonly size: number = 0;
   private length: number = 0;
 
@@ -19,43 +21,45 @@ export default class Queue<T> implements IQueue<T> {
     this.container = Array(size);
   }
 
-  isEmpty = () => this.length === 0;
+  get isEmpty() {
+    return this.length === 0;
+  }
 
   enqueue(item: T) {
     if (this.length >= this.size) {
       throw new Error("Достигнута максимальная длина очереди");
     }
-    this.container[this.tail] = item;
-    this.tail++;
+    this.container[this._tail] = item;
+    this._tail++;
     this.length++;
   }
 
   dequeue() {
-    if (this.isEmpty()) {
+    if (this.isEmpty) {
       throw new Error("Нет элементов в очереди");
     }
-    this.container[this.head] = null;
-    this.head++;
+    this.container[this._head] = null;
+    this._head++;
     this.length--;
   }
 
   clear = () => {
-    this.head = 0;
-    this.tail = 0;
+    this._head = 0;
+    this._tail = 0;
     this.length = 0;
   };
 
-  getHead = (): { value: T | null; index: number } => {
-    if (this.isEmpty()) {
+  get head() {
+    if (this.isEmpty) {
       throw new Error("Нет элементов в очереди");
     }
-    return { value: this.container[this.head], index: this.head };
-  };
+    return { value: this.container[this._head], index: this._head };
+  }
 
-  getTail = (): { value: T | null; index: number } => {
-    if (this.isEmpty()) {
+  get tail() {
+    if (this.isEmpty) {
       throw new Error("Нет элементов в очереди");
     }
-    return { value: this.container[this.tail - 1], index: this.tail - 1 };
-  };
+    return { value: this.container[this._tail - 1], index: this._tail - 1 };
+  }
 }

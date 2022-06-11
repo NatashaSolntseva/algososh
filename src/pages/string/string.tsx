@@ -63,27 +63,31 @@ export const StringComponent: FC = () => {
 
   return (
     <SolutionLayout title="Строка">
-      <InputWrapper>
-        <Input
-          disabled={inProсess}
-          extraClass={styles.input}
-          isLimitText={true}
-          maxLength={11}
-          value={inputValue}
-          onChange={(e: FormEvent<HTMLInputElement>) =>
-            setInputValue(e.currentTarget.value)
-          }
-        />
-        <Button
-          text={"Развернуть"}
-          type="submit"
-          onClick={(e) =>
-            swapOnClick(inputValue, setInputValue, setCharArr, setInProсess)
-          }
-          disabled={!inputValue}
-          isLoader={inProсess}
-        />
-      </InputWrapper>
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          swapOnClick(inputValue, setInputValue, setCharArr, setInProсess);
+        }}
+      >
+        <InputWrapper>
+          <Input
+            disabled={inProсess}
+            extraClass={styles.input}
+            isLimitText={true}
+            maxLength={11}
+            value={inputValue}
+            onChange={(e: FormEvent<HTMLInputElement>) =>
+              setInputValue(e.currentTarget.value)
+            }
+          />
+          <Button
+            text={"Развернуть"}
+            type="submit"
+            disabled={!inputValue}
+            isLoader={inProсess}
+          />
+        </InputWrapper>
+      </form>
       <ul className={styles.list}>
         {charArr &&
           charArr.map((char: ICircleElement, index) => {

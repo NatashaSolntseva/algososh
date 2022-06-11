@@ -39,32 +39,42 @@ export const FibonacciPage: FC = () => {
 
   return (
     <SolutionLayout title="Последовательность Фибоначчи">
-      <InputWrapper>
-        <Input
-          disabled={inProcess}
-          placeholder="Введите число от 1 до 19 (включительно)"
-          extraClass={styles.input}
-          type="number"
-          isLimitText={true}
-          min={1}
-          max={maxInputValue}
-          maxLength={2}
-          value={inputValue || ""}
-          onChange={(e: FormEvent<HTMLInputElement>) =>
-            setInputValue(Number(e.currentTarget.value))
-          }
-        />
-        <Button
-          text={"Рассчитать"}
-          type="submit"
-          onClick={(e) =>
-            inputValue &&
-            getFibonacci(inputValue, setInputValue, setNumbersArr, setInProcess)
-          }
-          isLoader={inProcess}
-          disabled={inputValue ? inputValue > maxInputValue : true}
-        />
-      </InputWrapper>
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          inputValue &&
+            getFibonacci(
+              inputValue,
+              setInputValue,
+              setNumbersArr,
+              setInProcess
+            );
+        }}
+      >
+        <InputWrapper>
+          <Input
+            disabled={inProcess}
+            placeholder="Введите число от 1 до 19 (включительно)"
+            extraClass={styles.input}
+            type="number"
+            isLimitText={true}
+            min={1}
+            max={maxInputValue}
+            maxLength={2}
+            value={inputValue || ""}
+            onChange={(e: FormEvent<HTMLInputElement>) =>
+              setInputValue(Number(e.currentTarget.value))
+            }
+          />
+          <Button
+            text={"Рассчитать"}
+            type="submit"
+            isLoader={inProcess}
+            disabled={inputValue ? inputValue > maxInputValue : true}
+          />
+        </InputWrapper>
+      </form>
+
       <ul className={styles.list}>
         {numbersArr.map((number, index) => {
           return (

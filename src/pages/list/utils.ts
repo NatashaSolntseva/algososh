@@ -1,38 +1,50 @@
-class Node<T> {
+class LinkedListNode<T> {
   value: T;
-  next: Node<T> | null;
-  constructor(value: T, next?: Node<T> | null) {
+  next: LinkedListNode<T> | null;
+  constructor(value: T, next?: LinkedListNode<T> | null) {
     this.value = value;
     this.next = next === undefined ? null : next;
   }
 }
 
 interface ILinkedList<T> {
-  getSize: () => number;
-  addToTail: (el: T) => void;
-  insertAtIndex: (el: T, index: number) => void;
+  prepend: (el: T) => void;
+  append: (el: T) => void;
+  addByIndex: (el: T, index: number) => void;
+  deleteByIndex: (index: number) => T | null;
+  deleteHead: () => T | null;
+  deleteTail: () => T | null;
   getNodeByIndex: (index: number) => T | null;
-  removeFromIndex: (index: number) => T | null;
+  sizeList: number;
 }
 
 export class LinkedList<T> implements ILinkedList<T> {
-  private head: Node<T> | null;
+  private head: LinkedListNode<T> | null;
   private size: number;
 
   constructor(initialState?: T[]) {
     this.size = 0;
     this.head = null;
     initialState?.forEach((el) => {
-      this.insertAtIndex(el, 0);
+      this.addByIndex(el, 0);
     });
   }
 
-  getSize() {
-    return this.size;
+  //добавление в начало списка
+  prepend(el: T) {
+    let node = new LinkedListNode(el);
+
+    if (!this.head) {
+      this.head = node;
+    }
+    node.next = this.head;
+    this.head = node;
+    this.size++;
   }
 
-  addToTail(el: T) {
-    let node = new Node(el);
+  //добавление в конец списка
+  append(el: T) {
+    let node = new LinkedListNode(el);
 
     if (this.size === 0) {
       this.head = node;
@@ -42,17 +54,17 @@ export class LinkedList<T> implements ILinkedList<T> {
         currentEl = currentEl.next;
       }
       if (currentEl) {
-        currentEl.next = new Node(el);
+        currentEl.next = new LinkedListNode(el);
       }
     }
     this.size++;
   }
 
-  insertAtIndex(el: T, index: number) {
+  addByIndex(el: T, index: number) {
     if (index < 0 || index > this.size) {
       throw new Error("Введите верное значение индекса");
     } else {
-      let node = new Node(el);
+      let node = new LinkedListNode(el);
 
       // добавдение в начало списка
       if (index === 0) {
@@ -79,21 +91,7 @@ export class LinkedList<T> implements ILinkedList<T> {
     }
   }
 
-  getNodeByIndex(index: number) {
-    if (index < 0 || index > this.size) {
-      return null;
-    }
-    let currentEl = this.head;
-    let curruntIndex = 0;
-
-    while (curruntIndex < index && currentEl) {
-      currentEl = currentEl.next;
-      curruntIndex++;
-    }
-    return currentEl ? currentEl.value : null;
-  }
-
-  removeFromIndex(index: number) {
+  deleteByIndex(index: number) {
     if (index < 0 || index > this.size) {
       return null;
     }
@@ -118,5 +116,56 @@ export class LinkedList<T> implements ILinkedList<T> {
     }
     this.size--;
     return currentEl ? currentEl.value : null;
+  }
+
+  deleteHead() {
+    if (!this.head) return null;
+    let deletedHead = this.head;
+
+    if (this.head.next) {
+      this.head = deletedHead.next;
+    } else {
+      this.head = null;
+    }
+    this.size--;
+    return deletedHead ? deletedHead.value : null;
+  }
+
+  deleteTail() {
+    if (this.size === 0) return null;
+
+    let currentEl = this.head;
+    let prevEl = null;
+    let currentIndex = 0;
+
+    while (currentIndex < this.size - 1 && currentEl) {
+      prevEl = currentEl;
+      currentEl = currentEl.next;
+      currentIndex++;
+    }
+
+    if (prevEl && currentEl) {
+      prevEl.next = currentEl.next;
+    }
+    this.size--;
+    return currentEl ? currentEl.value : null;
+  }
+
+  getNodeByIndex(index: number) {
+    if (index < 0 || index > this.size) {
+      return null;
+    }
+    let currentEl = this.head;
+    let curruntIndex = 0;
+
+    while (curruntIndex < index && currentEl) {
+      currentEl = currentEl.next;
+      curruntIndex++;
+    }
+    return currentEl ? currentEl.value : null;
+  }
+
+  get sizeList() {
+    return this.size;
   }
 }
