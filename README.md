@@ -1,4 +1,4 @@
-<h1 align="center"><a  href="" target="_blank"><img src="./readme_src/readme_header.png" width="100%" alt="шапка"></a></h1>
+<h1 align="center"><a  href="https://algososh-7u1knmgg3-natashasolntseva.vercel.app/" target="_blank"><img src="./readme_src/readme_header.png" width="100%" alt="шапка"></a></h1>
 
 ## Краткое описание проекта:
 
@@ -11,7 +11,7 @@
 - работа структуры данных "очередь"
 - работа структуры данных "однонаправленный связный список"
 
-[Открыть в браузере]()
+[Открыть в браузере](https://algososh-7u1knmgg3-natashasolntseva.vercel.app/)
 
 ## Технологии, использованные при создании:
 
@@ -57,10 +57,10 @@
 
 - [Макет](https://www.figma.com/file/RIkypcTQN5d37g7RRTFid0/Algososh_external_link)
 
-- [Ссылка на деплой]()
+- [Ссылка на деплой](https://algososh-7u1knmgg3-natashasolntseva.vercel.app/)
 
 - [По вопросам доработки сайта](https://t.me/UltraNata)
 
 ## Проектная работа: "АЛГОСОШ". Создана в рамках учебы в [Яндекс.Практикум](https://praktikum.yandex.ru/) на курсе ["Веб-разработчик плюс"](https://practicum.yandex.ru/web-plus/).
 
-<a  href="" target="_blank"><img src="./readme_src/readme_footer.gif" width="100%" alt="подвал"></a>
+<a  href="https://algososh-7u1knmgg3-natashasolntseva.vercel.app/" target="_blank"><img src="./readme_src/readme_footer.gif" width="100%" alt="подвал"></a>
