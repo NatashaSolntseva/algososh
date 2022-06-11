@@ -11,37 +11,7 @@ import { ElementStates } from "../../types/element-states";
 import { setDelay } from "../../utils/utils";
 import { SHORT_DELAY_IN_MS } from "../../constants/delays";
 import { ICircleElement } from "../../types/types";
-
-export interface IStack<T> {
-  push: (item: T) => void;
-  pop: () => void;
-  peak: () => T | null;
-  getSize: () => number;
-  clear: () => void;
-}
-
-export class Stack<T> implements IStack<T> {
-  container: T[] = [];
-
-  push = (item: T): void => {
-    this.container.push(item);
-  };
-
-  pop = (): void => {
-    this.container.pop();
-  };
-
-  peak = (): T | null => {
-    if (this.container.length !== 0) {
-      return this.container[this.container.length - 1];
-    }
-    return null;
-  };
-
-  getSize = () => this.container.length;
-
-  clear = () => (this.container.length = 0);
-}
+import { Stack } from "./utils";
 
 export const StackPage: FC = () => {
   const stack = useMemo(() => new Stack<string>(), []);
@@ -90,8 +60,6 @@ export const StackPage: FC = () => {
     setIsPopping(true);
     //удаляем элемент из стэка
     stack.pop();
-    console.log("stack", stack);
-    console.log("stack размер", stack.getSize());
     // проверка на пустоту стэка
     if (stack.getSize()) {
       elementsArr.pop();
