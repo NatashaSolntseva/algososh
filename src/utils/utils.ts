@@ -44,3 +44,12 @@ export const getRandomArr = (
   }
   return randomArr;
 };
+
+export const getRandomNumber = () => Math.floor(Math.random() * 1000);
+
+export const getRandomChar = () => {
+  const charString = "abcdefghigklmnopqrstuvwxyz0123456789";
+  const randomIndex = Math.floor(Math.random() * charString.length);
+  const char = charString[randomIndex];
+  return char;
+};

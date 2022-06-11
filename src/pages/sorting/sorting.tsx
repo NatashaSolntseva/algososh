@@ -1,4 +1,4 @@
-import { Dispatch, FC, SetStateAction, useState } from "react";
+import { Dispatch, FC, SetStateAction, useEffect, useState } from "react";
 
 import styles from "./sortingStyles.module.css";
 
@@ -17,14 +17,30 @@ export interface IColumn {
   state: ElementStates;
 }
 
+type TSortingState = {
+  isAscending: boolean;
+  isDescending: boolean;
+  isInProсess: boolean;
+};
+
 export const SortingPage: FC = () => {
   const [sortingType, setSortingType] = useState<string>("selection");
   const [initialArr, setInitialArr] = useState<Array<IColumn>>([]);
   const [inProсess, setInProсess] = useState(false);
+  const [statesList, setStatesList] = useState<TSortingState>({
+    isAscending: false,
+    isDescending: false,
+    isInProсess: false,
+  });
 
   const generateNewArray = () => {
     setInitialArr([...getRandomArr(3, 17, 100)]);
   };
+
+  // первая отрисовка массива
+  useEffect(() => {
+    generateNewArray();
+  }, []);
 
   const bubbleSorting = async (
     sortingOption: "ascending" | "descending",
@@ -32,26 +48,35 @@ export const SortingPage: FC = () => {
     initialArrSetter: Dispatch<SetStateAction<IColumn[]>>,
     processSetter: Dispatch<SetStateAction<boolean>>
   ) => {
+    //лочим кнопки и лоудеры
+    sortingOption === "ascending"
+      ? setStatesList({ ...statesList, isAscending: true })
+      : setStatesList({ ...statesList, isDescending: true });
     processSetter(true);
+
+    //копия массива
     const arr = [...initialArr];
+    arr.forEach((el) => (el.state = ElementStates.Default));
 
     for (let i = 0; i < arr.length; i++) {
-      console.log("i", i);
-      console.log("arr i", arr);
       for (let j = 0; j < arr.length - i - 1; j++) {
-        console.log("j", j);
-        console.log("arr j", arr);
-        //выделяем элементы, которые будем сравнивать
+        //выбираем 2 элемента, которые будем сравнивать, подсвечиваем розовым
         arr[j].state = ElementStates.Changing;
         arr[j + 1].state = ElementStates.Changing;
+
+        //рендер
         initialArrSetter([...arr]);
         await setDelay(SHORT_DELAY_IN_MS);
+
         if (
           (sortingOption === "ascending" ? arr[j].number : arr[j + 1].number) >
           (sortingOption === "ascending" ? arr[j + 1].number : arr[j].number)
         ) {
-          initialArrSetter([...arr]);
+          //меняем элементы местами
           swapArrElements(arr, j, j + 1);
+
+          //рендер
+          initialArrSetter([...arr]);
           await setDelay(SHORT_DELAY_IN_MS);
         }
         //убираем розовую подсветку после сравнения элементов и возможного свопа
@@ -61,14 +86,17 @@ export const SortingPage: FC = () => {
         if (j === arr.length - i - 2) {
           arr[j + 1].state = ElementStates.Modified;
         }
-      }
-      //прошли весь внешний цикл и красим оставшийся элемент в зеленый
-      if (i === arr.length - 1) {
-        arr[0].state = ElementStates.Modified;
+        //рендер
+        initialArrSetter([...arr]);
+        await setDelay(SHORT_DELAY_IN_MS);
       }
     }
-    initialArrSetter([...arr]);
+    arr.forEach((el) => (el.state = ElementStates.Modified));
+    //разлочимлочим кнопки и лоудеры
     processSetter(false);
+    sortingOption === "ascending"
+      ? setStatesList({ ...statesList, isAscending: false })
+      : setStatesList({ ...statesList, isDescending: false });
   };
 
   const selectionSorting = async (
@@ -77,62 +105,81 @@ export const SortingPage: FC = () => {
     initialArrSetter: Dispatch<SetStateAction<IColumn[]>>,
     processSetter: Dispatch<SetStateAction<boolean>>
   ) => {
+    //лочим кнопки и лоудеры
+    sortingOption === "ascending"
+      ? setStatesList({ ...statesList, isAscending: true })
+      : setStatesList({ ...statesList, isDescending: true });
     processSetter(true);
+
+    //создаем копию массива
     const arr = [...initialArr];
     arr.forEach((el) => (el.state = ElementStates.Default));
-    console.log("initial arr", arr);
 
     for (let i = 0; i < arr.length - 1; i++) {
       let swapInd = i;
-      console.log("arr в первом цикле", arr);
-      // await setDelay(SHORT_DELAY_IN_MS);
+      //подсвечиваем розовым элемент
+      arr[swapInd].state = ElementStates.Changing;
 
       for (let j = i + 1; j < arr.length; j++) {
-        console.log("swapInd i", swapInd);
-        console.log("arr[swapInd] розовым", arr[swapInd].number);
-        console.log("j", j);
-        console.log("arr[j] розовым", arr[j].number);
-        //подсвечиваем розовым два сравниваемых элемента
-        arr[swapInd].state = ElementStates.Changing;
-        await setDelay(SHORT_DELAY_IN_MS);
+        //подсвечиваем розовым кандидата на перестановку
         arr[j].state = ElementStates.Changing;
+        //рендер
+        initialArrSetter([...arr]);
+        await setDelay(SHORT_DELAY_IN_MS);
+
+        //сравниваем элементы
         if (
           (sortingOption === "ascending"
             ? arr[swapInd].number
             : arr[j].number) >
           (sortingOption === "ascending" ? arr[j].number : arr[swapInd].number)
         ) {
+          //если кандидат меньше (больше) текущего то мы нашли второго кандидата на перестановку
+          // а первого кандидата оставляем розовым (если это iый элемент) или делаем дефолтным
+          arr[swapInd].state =
+            i === swapInd ? ElementStates.Changing : ElementStates.Default;
+
           swapInd = j;
-          console.log("меняем в условии swapInd с i  на j", swapInd);
+
+          //рендер
           initialArrSetter([...arr]);
-          console.log("arr in j", arr);
           await setDelay(SHORT_DELAY_IN_MS);
-        } else {
-          //если нет, то убираем выделение и выделяем слудующий
-
-          arr[j].state = ElementStates.Default;
-          console.log(
-            "если arr[swapInd].number < arr[j].number arr[j] в синий не меняем",
-            arr[j].number
-          );
         }
-        console.log("swapInd после условия в цикле j", swapInd);
-        console.log("arr[swapInd] зеленым", arr[swapInd].number);
-        arr[swapInd].state = ElementStates.Modified;
-        /*if (i === arr.length - 2 || j === arr.length - 1) {
-          arr[arr.length - 1].state = ElementStates.Modified;
-        }*/
+        // снимаем выделение с просмотренных кандидатов
+        if (j !== swapInd) {
+          arr[j].state = ElementStates.Default;
+          //рендер
+          initialArrSetter([...arr]);
+          await setDelay(SHORT_DELAY_IN_MS);
+        }
       }
+      // если сортируемый элемент является экстремумом, то делаем его зеленым
+      if (i === swapInd) {
+        arr[i].state = ElementStates.Modified;
 
-      if (swapInd !== i) {
-        swapArrElements(arr, swapInd, i);
+        //рендер
         initialArrSetter([...arr]);
-        console.log("arr in if", arr);
+        await setDelay(SHORT_DELAY_IN_MS);
+      } else {
+        //в противном случае переставляем
+        swapArrElements(arr, swapInd, i);
+        arr[i].state = ElementStates.Modified;
+        //рендер
+        initialArrSetter([...arr]);
+        await setDelay(SHORT_DELAY_IN_MS);
+        arr[swapInd].state = ElementStates.Default;
+
+        //рендер
+        initialArrSetter([...arr]);
         await setDelay(SHORT_DELAY_IN_MS);
       }
     }
-    initialArrSetter([...arr]);
+    arr.forEach((el) => (el.state = ElementStates.Modified));
+    //разлочим кнопки и лоудеры
     processSetter(false);
+    sortingOption === "ascending"
+      ? setStatesList({ ...statesList, isAscending: false })
+      : setStatesList({ ...statesList, isDescending: false });
   };
 
   return (
@@ -172,7 +219,8 @@ export const SortingPage: FC = () => {
                     setInProсess
                   )
             }
-            isLoader={inProсess}
+            isLoader={statesList.isAscending}
+            disabled={statesList.isDescending}
           />
           <Button
             sorting={Direction.Descending}
@@ -193,14 +241,16 @@ export const SortingPage: FC = () => {
                     setInProсess
                   )
             }
-            isLoader={inProсess}
+            isLoader={statesList.isDescending}
+            disabled={statesList.isAscending}
           />
         </div>
         <Button
           text={"Новый массив"}
           type="submit"
           onClick={() => generateNewArray()}
-          isLoader={inProсess}
+          disabled={inProсess}
+          isLoader={false}
         />
       </InputWrapper>
       <ul className={styles.list}>

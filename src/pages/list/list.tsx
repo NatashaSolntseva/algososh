@@ -10,7 +10,7 @@ import { Circle } from "../../components/ui/circle/circle";
 import { ArrowIcon } from "../../components/ui/icons/arrow-icon";
 import { ICircleElement } from "../../types/types";
 import { ElementStates } from "../../types/element-states";
-import { setDelay } from "../../utils/utils";
+import { getRandomChar, setDelay } from "../../utils/utils";
 import { SHORT_DELAY_IN_MS } from "../../constants/delays";
 
 type TLinkedListElementState = {
@@ -147,8 +147,12 @@ class LinkedList<T> implements ILinkedList<T> {
 
 export const ListPage: React.FC = () => {
   const maxListLength = 12;
+  const minListLength = 4;
   //для первой отрисовки списка
-  const initialRenderArr = useMemo(() => ["1", "8", "34", "0"], []);
+  const initialRenderArr = useMemo(
+    () => Array.from({ length: minListLength }, () => `${getRandomChar()}`),
+    []
+  );
   const initialArrState: ICircleElement[] = useMemo(() => [], []);
   // экземпляр списка
   const linkedList = useMemo(
