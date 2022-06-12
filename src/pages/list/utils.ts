@@ -14,6 +14,7 @@ interface ILinkedList<T> {
   deleteByIndex: (index: number) => T | null;
   deleteHead: () => T | null;
   deleteTail: () => T | null;
+  toArray: () => void;
   getNodeByIndex: (index: number) => T | null;
   sizeList: number;
 }
@@ -149,6 +150,17 @@ export class LinkedList<T> implements ILinkedList<T> {
     }
     this.size--;
     return currentEl ? currentEl.value : null;
+  }
+
+  toArray() {
+    const nodes = [];
+    let currentNode = this.head;
+
+    while (currentNode) {
+      nodes.push(currentNode.value);
+      currentNode = currentNode.next;
+    }
+    return nodes;
   }
 
   getNodeByIndex(index: number) {
