@@ -1,0 +1,45 @@
+.contentContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.input {
+  max-width: 204px;
+}
+
+.button {
+  min-width: 175px;
+}
+
+.buttonLage {
+  min-width: 362px;
+}
+
+.list {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+
+  padding: 90px 0 0;
+  margin: 0;
+  list-style-type: none;
+}
+
+.listElementsWrapper {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  position: relative;
+}
+
+.topCirlce {
+  position: absolute;
+  top: -62px;
+  left: 11px;
+}
+
+.buttomCircle {
+  position: absolute;
+  top: 120px;
+  left: 11px;
+}

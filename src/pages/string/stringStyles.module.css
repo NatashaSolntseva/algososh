@@ -1,0 +1,14 @@
+.input {
+  max-width: 377px;
+}
+
+.list {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 16px;
+
+  padding: 120px 0 0;
+  margin: 0;
+  list-style-type: none;
+}

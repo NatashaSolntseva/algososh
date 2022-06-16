@@ -1,0 +1,25 @@
+.radioWrapper {
+  display: flex;
+  gap: 48px;
+  margin-top: 18px;
+}
+
+.buttonsWrapper {
+  display: flex;
+  gap: 12px;
+  padding-right: 80px;
+}
+
+.list {
+  list-style-type: none;
+  margin: 0 auto;
+  padding-top: 48px;
+  max-width: 944px;
+  display: flex;
+  column-gap: 16px;
+  row-gap: 48px;
+  justify-content: center;
+  align-items: flex-end;
+  align-content: flex-start;
+}
+/*TODO не совсем по центру стоит?*/

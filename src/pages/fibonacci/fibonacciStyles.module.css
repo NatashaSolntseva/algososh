@@ -1,0 +1,16 @@
+.input {
+  max-width: 377px;
+  margin-right: 12px;
+}
+
+.list {
+  display: flex;
+  flex-wrap: wrap;
+  column-gap: 16px;
+  row-gap: 48px;
+  max-width: 944px;
+
+  padding: 48px 0 0;
+  margin: 0 auto;
+  list-style-type: none;
+}
