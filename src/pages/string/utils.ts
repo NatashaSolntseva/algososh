@@ -20,7 +20,9 @@ export function getElementsState(
 //возвращает массив с переворот по шагам
 export function getReversingStringSteps(inputString: string): string[][] {
   const inputStringChars = inputString.split("");
-  const reversingStreps: string[][] = [[...inputStringChars]];
+  const reversingSteps: string[][] = [[...inputStringChars]];
+
+  console.log("reversingSteps in utils", reversingSteps);
 
   if (inputString.length <= 1) {
     return [[...inputStringChars]];
@@ -32,7 +34,7 @@ export function getReversingStringSteps(inputString: string): string[][] {
   //в середине заканчиваем переворот
 
   const maxAlgoIteration = Math.ceil((inputString.length - 1) / 2);
-  console.log(maxAlgoIteration);
+  //console.log(maxAlgoIteration);
 
   //метод двух указателей
   for (
@@ -50,8 +52,8 @@ export function getReversingStringSteps(inputString: string): string[][] {
     inputStringChars[rightPointerPosition] = temp;
 
     //добавляем в массив с переворотными шагами состояние на шаге
-    reversingStreps.push([...inputStringChars]);
+    reversingSteps.push([...inputStringChars]);
   }
-  console.log(reversingStreps);
-  return reversingStreps;
+  //console.log(reversingSteps);
+  return reversingSteps;
 }

@@ -1,20 +1,31 @@
-import swapOnClick from "../utils";
+import { getReversingStringSteps } from "../utils";
+
+const resultForEvenSymbols = [
+  ["1", "2", "3", "4"],
+  ["4", "2", "3", "1"],
+  ["4", "3", "2", "1"],
+];
+
+const resultForOddSymbols = [
+  ["1", "2", "3", "4", "5"],
+  ["5", "2", "3", "4", "1"],
+  ["5", "4", "3", "2", "1"],
+];
 
 describe("string reversal algorithm test", () => {
-  const testString = "12";
+  it("Expands the string correctly with an even number of characters, return arr of steps.", () => {
+    expect(getReversingStringSteps("1234")).toEqual(resultForEvenSymbols);
+  });
 
-  it("Expands the string correctly with an even number of characters.", async () => {
-    const swap = await swapOnClick(testString);
-    expect(swap).toEqual(["2", "1"]);
+  it("Expands the string correctly with an odd number of characters, return arr of steps.", () => {
+    expect(getReversingStringSteps("12345")).toEqual(resultForOddSymbols);
+  });
+
+  it("Expands the string correctly with an one character, return arr of steps.", () => {
+    expect(getReversingStringSteps("A")).toEqual([["A"]]);
+  });
+
+  it("Expands the string correctly with an empty string, return arr of steps.", () => {
+    expect(getReversingStringSteps("")).toEqual([[]]);
   });
 });
-
-/*
-
-    it("Разворот строки с чётным количеством символов", async () => {
-        const alg = await reverseStringAlgo(['1', '2'], ()=>{})
-        expect(alg).toEqual(['2', '1']);
-    })
-
-
-*/
