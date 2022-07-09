@@ -1,4 +1,4 @@
-import { Dispatch, FC, SetStateAction, useEffect, useState } from "react";
+import { FC, useEffect, useState } from "react";
 
 import styles from "./sortingStyles.module.css";
 
@@ -9,8 +9,9 @@ import { Column } from "../../components/ui/column/column";
 import { Direction } from "../../types/direction";
 import InputWrapper from "../../components/input-wrapper/input-wrapper";
 import { ElementStates } from "../../types/element-states";
-import { getRandomArr, setDelay, swapArrElements } from "../../utils/utils";
+import { getRandomArr, setDelay } from "../../utils/utils";
 import { SHORT_DELAY_IN_MS } from "../../constants/delays";
+import { bubbleSortingAlgo, selectionSortingAlgo } from "./utils";
 
 export interface IColumn {
   number: number;
@@ -42,141 +43,53 @@ export const SortingPage: FC = () => {
     generateNewArray();
   }, []);
 
-  const bubbleSorting = async (
-    sortingOption: "ascending" | "descending",
-    initialArr: IColumn[],
-    initialArrSetter: Dispatch<SetStateAction<IColumn[]>>,
-    processSetter: Dispatch<SetStateAction<boolean>>
-  ) => {
-    //лочим кнопки и лоудеры
-    sortingOption === "ascending"
-      ? setStatesList({ ...statesList, isAscending: true })
-      : setStatesList({ ...statesList, isDescending: true });
-    processSetter(true);
-
-    //копия массива
-    const arr = [...initialArr];
-    arr.forEach((el) => (el.state = ElementStates.Default));
-
-    for (let i = 0; i < arr.length; i++) {
-      for (let j = 0; j < arr.length - i - 1; j++) {
-        //выбираем 2 элемента, которые будем сравнивать, подсвечиваем розовым
-        arr[j].state = ElementStates.Changing;
-        arr[j + 1].state = ElementStates.Changing;
-
-        //рендер
-        initialArrSetter([...arr]);
-        await setDelay(SHORT_DELAY_IN_MS);
-
-        if (
-          (sortingOption === "ascending" ? arr[j].number : arr[j + 1].number) >
-          (sortingOption === "ascending" ? arr[j + 1].number : arr[j].number)
-        ) {
-          //меняем элементы местами
-          swapArrElements(arr, j, j + 1);
-
-          //рендер
-          initialArrSetter([...arr]);
-          await setDelay(SHORT_DELAY_IN_MS);
-        }
-        //убираем розовую подсветку после сравнения элементов и возможного свопа
-        arr[j].state = ElementStates.Default;
-        arr[j + 1].state = ElementStates.Default;
-        //красим в зеленый последний во внутреннем цикле и в итоге отсортированный
-        if (j === arr.length - i - 2) {
-          arr[j + 1].state = ElementStates.Modified;
-        }
-        //рендер
-        initialArrSetter([...arr]);
-        await setDelay(SHORT_DELAY_IN_MS);
-      }
-    }
-    arr.forEach((el) => (el.state = ElementStates.Modified));
-    //разлочимлочим кнопки и лоудеры
-    processSetter(false);
-    sortingOption === "ascending"
-      ? setStatesList({ ...statesList, isAscending: false })
-      : setStatesList({ ...statesList, isDescending: false });
+  //--------------------------------------------------------------------------------
+  const renderAndWait = async (arr: IColumn[]) => {
+    setInitialArr([...arr]);
+    await setDelay(SHORT_DELAY_IN_MS);
   };
 
-  const selectionSorting = async (
+  const sortingAndRender = async (
     sortingOption: "ascending" | "descending",
-    initialArr: IColumn[],
-    initialArrSetter: Dispatch<SetStateAction<IColumn[]>>,
-    processSetter: Dispatch<SetStateAction<boolean>>
+    sortingType: string
   ) => {
-    //лочим кнопки и лоудеры
+    // лочим кнопки и лоадер запускаем
+    setInProсess(true);
     sortingOption === "ascending"
       ? setStatesList({ ...statesList, isAscending: true })
       : setStatesList({ ...statesList, isDescending: true });
-    processSetter(true);
 
-    //создаем копию массива
-    const arr = [...initialArr];
-    arr.forEach((el) => (el.state = ElementStates.Default));
-
-    for (let i = 0; i < arr.length - 1; i++) {
-      let swapInd = i;
-      //подсвечиваем розовым элемент
-      arr[swapInd].state = ElementStates.Changing;
-
-      for (let j = i + 1; j < arr.length; j++) {
-        //подсвечиваем розовым кандидата на перестановку
-        arr[j].state = ElementStates.Changing;
-        //рендер
-        initialArrSetter([...arr]);
-        await setDelay(SHORT_DELAY_IN_MS);
-
-        //сравниваем элементы
-        if (
-          (sortingOption === "ascending"
-            ? arr[swapInd].number
-            : arr[j].number) >
-          (sortingOption === "ascending" ? arr[j].number : arr[swapInd].number)
-        ) {
-          //если кандидат меньше (больше) текущего то мы нашли второго кандидата на перестановку
-          // а первого кандидата оставляем розовым (если это iый элемент) или делаем дефолтным
-          arr[swapInd].state =
-            i === swapInd ? ElementStates.Changing : ElementStates.Default;
-
-          swapInd = j;
-
-          //рендер
-          initialArrSetter([...arr]);
-          await setDelay(SHORT_DELAY_IN_MS);
-        }
-        // снимаем выделение с просмотренных кандидатов
-        if (j !== swapInd) {
-          arr[j].state = ElementStates.Default;
-          //рендер
-          initialArrSetter([...arr]);
-          await setDelay(SHORT_DELAY_IN_MS);
-        }
-      }
-      // если сортируемый элемент является экстремумом, то делаем его зеленым
-      if (i === swapInd) {
-        arr[i].state = ElementStates.Modified;
-
-        //рендер
-        initialArrSetter([...arr]);
-        await setDelay(SHORT_DELAY_IN_MS);
-      } else {
-        //в противном случае переставляем
-        swapArrElements(arr, swapInd, i);
-        arr[i].state = ElementStates.Modified;
-        //рендер
-        initialArrSetter([...arr]);
-        await setDelay(SHORT_DELAY_IN_MS);
-        arr[swapInd].state = ElementStates.Default;
-
-        //рендер
-        initialArrSetter([...arr]);
-        await setDelay(SHORT_DELAY_IN_MS);
+    //выбором
+    if (sortingType === "selection") {
+      const arr = [...initialArr];
+      arr.forEach((el) => (el.state = ElementStates.Default));
+      let stepCounter = 1;
+      while (
+        stepCounter !==
+        selectionSortingAlgo(sortingOption, arr).numberOfAlgoSteps
+      ) {
+        await renderAndWait(
+          selectionSortingAlgo(sortingOption, arr, stepCounter).stepResArray
+        );
+        stepCounter++;
       }
     }
-    arr.forEach((el) => (el.state = ElementStates.Modified));
-    //разлочим кнопки и лоудеры
-    processSetter(false);
+    // пузырек
+    else {
+      const arr = [...initialArr];
+      arr.forEach((el) => (el.state = ElementStates.Default));
+      let stepCounter = 1;
+      while (
+        stepCounter !== bubbleSortingAlgo(sortingOption, arr).numberOfAlgoSteps
+      ) {
+        await renderAndWait(
+          bubbleSortingAlgo(sortingOption, arr, stepCounter).stepResArray
+        );
+        stepCounter++;
+      }
+    }
+    // разлочим кнопки
+    setInProсess(false);
     sortingOption === "ascending"
       ? setStatesList({ ...statesList, isAscending: false })
       : setStatesList({ ...statesList, isDescending: false });
@@ -206,18 +119,8 @@ export const SortingPage: FC = () => {
             text={"По возрастанию"}
             onClick={() =>
               sortingType === "selection"
-                ? selectionSorting(
-                    "ascending",
-                    initialArr,
-                    setInitialArr,
-                    setInProсess
-                  )
-                : bubbleSorting(
-                    "ascending",
-                    initialArr,
-                    setInitialArr,
-                    setInProсess
-                  )
+                ? sortingAndRender("ascending", "selection")
+                : sortingAndRender("ascending", "bubble")
             }
             isLoader={statesList.isAscending}
             disabled={statesList.isDescending}
@@ -228,18 +131,8 @@ export const SortingPage: FC = () => {
             text={"По убыванию"}
             onClick={() =>
               sortingType === "selection"
-                ? selectionSorting(
-                    "descending",
-                    initialArr,
-                    setInitialArr,
-                    setInProсess
-                  )
-                : bubbleSorting(
-                    "descending",
-                    initialArr,
-                    setInitialArr,
-                    setInProсess
-                  )
+                ? sortingAndRender("descending", "selection")
+                : sortingAndRender("descending", "bubble")
             }
             isLoader={statesList.isDescending}
             disabled={statesList.isAscending}

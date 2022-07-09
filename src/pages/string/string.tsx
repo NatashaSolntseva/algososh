@@ -1,4 +1,4 @@
-import { FC, FormEvent, useEffect, useRef, useState } from "react";
+import { FC, FormEvent, useRef, useState } from "react";
 
 import styles from "./stringStyles.module.css";
 
@@ -20,17 +20,14 @@ export const StringComponent: FC = () => {
 
   const swapString = () => {
     const steps = getReversingStringSteps(inputValue);
-    console.log("steps", steps);
     setReversingAlgoSteps(steps);
-    console.log("setReversingAlgoSteps", reversingAlgoSteps);
 
     //обнуляем счетчик
     setCurrentReversingAlgoStep(0);
 
-    if (steps.length) {
+    if (steps.length > 1) {
       intervalObj.current = setInterval(() => {
         setCurrentReversingAlgoStep((currentStep) => {
-          console.log(currentStep);
           const nextStep = currentStep + 1;
 
           if (nextStep >= steps.length - 1 && intervalObj.current) {
