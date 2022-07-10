@@ -212,7 +212,6 @@ describe("stack component works correctly", () => {
             expect($item).to.contain("1");
           }
         });
-      // Удаляем второй
 
       // el button clicked, last element eleted
       cy.contains("Удалить").click();
