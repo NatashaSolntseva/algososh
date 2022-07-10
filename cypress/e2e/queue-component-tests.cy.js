@@ -26,7 +26,7 @@ describe("queue component works correctly", () => {
       cy.contains("Очистить").should("not.be.disabled");
     });
 
-    it("After clear the stack, then all buttons is not available", () => {
+    it("After clear the queue, then all buttons is not available", () => {
       cy.get("input").type("239");
       cy.contains("Добавить").click();
       cy.get("input").type("fml");
@@ -39,7 +39,7 @@ describe("queue component works correctly", () => {
     });
   });
 
-  describe("check the stack algo and render works correctly", () => {
+  describe("check the queue algo and render works correctly", () => {
     it("Check add elements", () => {
       //add an element
       cy.get("input").type("Y");
