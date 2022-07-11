@@ -62,10 +62,11 @@ export const StackPage: FC = () => {
     stack.pop();
     // проверка на пустоту стэка
     if (stack.size) {
-      elementsArr.pop();
-      //Изменить стейт головы и сделать отментку top
-      elementsArr[elementsArr.length - 1].head = "top";
       elementsArr[elementsArr.length - 1].state = ElementStates.Changing;
+      setElementsArr([...elementsArr]);
+      elementsArr.pop();
+      await setDelay(SHORT_DELAY_IN_MS);
+      elementsArr[elementsArr.length - 1].head = "top";
       setElementsArr([...elementsArr]);
     } else {
       setElementsArr([]);

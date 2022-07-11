@@ -327,6 +327,7 @@ export const ListPage: React.FC = () => {
       <div className={styles.contentContainer}>
         <InputWrapper>
           <Input
+            name="value"
             extraClass={styles.input}
             placeholder="Введите значение"
             isLimitText={true}
@@ -375,6 +376,7 @@ export const ListPage: React.FC = () => {
         </InputWrapper>
         <InputWrapper>
           <Input
+            name="index"
             disabled={inProcess}
             extraClass={styles.input}
             placeholder="Введите индекс"

@@ -1,0 +1,73 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`checking column with snapshots. column in changing state shoud be rendered 1`] = `
+<div
+  className="content "
+>
+  <div
+    className="column modified"
+    style={
+      Object {
+        "height": 1,
+      }
+    }
+  />
+  <p
+    className="text text_type_column text_color_input mt-3"
+  />
+</div>
+`;
+
+exports[`checking column with snapshots. column in default state shoud be rendered 1`] = `
+<div
+  className="content "
+>
+  <div
+    className="column default"
+    style={
+      Object {
+        "height": 1,
+      }
+    }
+  />
+  <p
+    className="text text_type_column text_color_input mt-3"
+  />
+</div>
+`;
+
+exports[`checking column with snapshots. column in modified state shoud be rendered 1`] = `
+<div
+  className="content "
+>
+  <div
+    className="column changing"
+    style={
+      Object {
+        "height": 1,
+      }
+    }
+  />
+  <p
+    className="text text_type_column text_color_input mt-3"
+  />
+</div>
+`;
+
+exports[`checking column with snapshots. column should be rendered 1`] = `
+<div
+  className="content "
+>
+  <div
+    className="column default"
+    style={
+      Object {
+        "height": 1,
+      }
+    }
+  />
+  <p
+    className="text text_type_column text_color_input mt-3"
+  />
+</div>
+`;
